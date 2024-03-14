@@ -1,21 +1,15 @@
 package productservicepublisher;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class ProductServiceImpl implements ProductService {
 
-	 private static final HashMap<String, Double> PRODUCTS_DATA = new HashMap<>();
-
-	    static {
-	        
-	        PRODUCTS_DATA.put("Coffee", 10.0);
-	        PRODUCTS_DATA.put("Orange Juice", 20.0);
-	        PRODUCTS_DATA.put("Water", 30.0);
-	    }
+	private static final Product[] PRODUCTS_DATA = {
+	        new Product("Coffee", 10.0),
+	        new Product("Orange Juice", 20.0),
+	        new Product("Water", 30.0)
+	};
 
  	public List<Product> getAllProducts() {
 	
@@ -24,13 +18,12 @@ public class ProductServiceImpl implements ProductService {
 	 		
 	 		int index = 1;
 	 		
-	        List<Product> products = new ArrayList<>();
-	        
-	        for (Map.Entry<String, Double> entry : PRODUCTS_DATA.entrySet()) {
-	            String name = entry.getKey();
-	            double price = entry.getValue();
-	            System.out.println(index + ". " + name + " - Rs " + price);
-	            index++;
+	 		List<Product> products = new ArrayList<>();
+	        for (int i = 0; i < PRODUCTS_DATA.length; i++) {
+	            String name = PRODUCTS_DATA[i].getName();
+	            double price = PRODUCTS_DATA[i].getPrice();
+	            System.out.println((i + 1) + ". " + name + " - Rs " + price);
+	            products.add(PRODUCTS_DATA[i]);
 	        }
 
 	        return products;
@@ -48,8 +41,7 @@ public class ProductServiceImpl implements ProductService {
             
             	if(input2.equals("-1")) {
             		System.out.println("Redirecting to the cart");
-            		getProductByIndex();
-            		
+            		getProductByIndex();	
             	}
         }else {
             System.out.println("Invalid input. Please enter 'Y' or 'N'.");
@@ -61,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
  		Scanner scanner = new Scanner(System.in);
 
         while (true) {
-        	System.out.println("Enter the index of the product (-2 to quit):");
+        	System.out.println("Enter the ID of the product (-2 to quit):");
             int index = scanner.nextInt();
             scanner.nextLine();
             
@@ -70,23 +62,13 @@ public class ProductServiceImpl implements ProductService {
                 return null;
             }
         	
-	        if (index < 1 || index > PRODUCTS_DATA.size()) {
-	            System.out.println("Invalid index. Please enter a valid index.");
-	            return null;
+	        if (index < 1 || index > PRODUCTS_DATA.length) {
+	            System.out.println("Invalid ID. Please enter a valid ID.");
+	            continue;
 	        }
 	
-	        int currentIndex = 1;
-	        for (Map.Entry<String, Double> entry : PRODUCTS_DATA.entrySet()) {
-	            if (currentIndex == index) {
-	                String name = entry.getKey();
-	                double price = entry.getValue();
-	                System.out.println(name + " -  Rs" + price);
-	                return new Product(name, price);
-	            }
-	            currentIndex++;
-	        }
-	
-	        
+	    System.out.println(PRODUCTS_DATA[index - 1]);
+            return PRODUCTS_DATA[index - 1]; 
         }
     }
  	
